@@ -1,0 +1,18 @@
+{
+  "products": {
+    "tcca_200": {"label": "TCCA 90% – 200 g", "weight_g": 200, "avail_cl": 0.90},
+    "hth_300":  {"label": "Ca(OCl)2 70% – 300 g", "weight_g": 300, "avail_cl": 0.70},
+    "tcca_20":  {"label": "TCCA 90% – 20 g", "weight_g": 20, "avail_cl": 0.90}
+  },
+  "frc_targets_mgl": {
+    "tank":      {"min": 0.5, "max": 1.0},
+    "tap":       {"min": 0.2, "max": 0.5},
+    "household": {"min": 0.2, "max": 0.5}
+  },
+  "compliance_target": 0.95,
+  "dose_tolerance": 0.20,
+  "stock_alert_days": 44,
+  "stock_window_days": 28,
+  "late_report_days": 2,
+  "publish_free_text": false
+}

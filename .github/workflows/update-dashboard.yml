@@ -1,0 +1,72 @@
+name: Update data and publish dashboard
+
+on:
+  schedule:
+    # 06:17 and 18:17 West Africa Time (cron runs in UTC)
+    - cron: "17 5 * * *"
+    - cron: "17 17 * * *"
+  workflow_dispatch:        # "Run workflow" button for an on-demand refresh
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/data/**"      # data commits made by this workflow don't re-trigger it
+
+permissions:
+  contents: write           # commit refreshed data files
+  pages: write              # publish to GitHub Pages
+  id-token: write
+
+concurrency:
+  group: dashboard
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Pull KoboToolbox submissions and build data files
+        env:
+          KOBO_SERVER: ${{ vars.KOBO_SERVER }}
+          KOBO_ASSET_UID: ${{ vars.KOBO_ASSET_UID }}
+          KOBO_TOKEN: ${{ secrets.KOBO_TOKEN }}
+        run: |
+          if [ -n "$KOBO_TOKEN" ] && [ -n "$KOBO_ASSET_UID" ]; then
+            python pipeline/build_data.py --source kobo
+          else
+            echo "::warning::KOBO_TOKEN / KOBO_ASSET_UID not set – publishing sample data"
+            python pipeline/build_data.py --source sample
+          fi
+
+      - name: Commit refreshed data (keeps a history of every update)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data
+          if git diff --cached --quiet; then
+            echo "No data changes"
+          else
+            git commit -m "Data update $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

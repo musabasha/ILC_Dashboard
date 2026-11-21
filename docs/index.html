@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Borehole Chlorination Monitoring Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%227%22 fill=%22%232a78d6%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="viz-root">
+  <header class="top">
+    <div>
+      <h1>Borehole chlorination monitoring</h1>
+      <p class="sub" id="subtitle">Daily chlorine consumption and free residual chlorine (FRC) from KoboCollect reports</p>
+    </div>
+    <button id="themeToggle" class="ghost" type="button" aria-label="Toggle dark mode">Light / dark</button>
+  </header>
+
+  <section class="filters" aria-label="Filters">
+    <label>LGA <select id="fLga"></select></label>
+    <label>Borehole <select id="fBh"></select></label>
+    <div class="presets" role="group" aria-label="Period">
+      <button type="button" data-days="7">7 days</button>
+      <button type="button" data-days="30">30 days</button>
+      <button type="button" data-days="90">90 days</button>
+      <button type="button" data-days="all">All</button>
+    </div>
+    <label>From <input type="date" id="fFrom"></label>
+    <label>To <input type="date" id="fTo"></label>
+  </section>
+
+  <div id="demoBanner" class="banner" hidden>Showing <strong>sample data</strong>. Connect your Kobo project (see README) to replace it with real reports.</div>
+
+  <section class="kpis" id="kpis" aria-label="Key figures"></section>
+
+  <section class="grid">
+    <article class="card wide">
+      <h2>Chlorine used per day</h2>
+      <p class="note">Grams of available chlorine in tablets added to chlorinators (tablets × weight × % chlorine). Tablets are added every few days, so read the 7-day average for the trend.</p>
+      <div class="chart" id="chUse"></div>
+    </article>
+    <article class="card wide">
+      <h2>FRC at tank outlet</h2>
+      <p class="note" id="frcNote"></p>
+      <div class="chart" id="chFrc"></div>
+    </article>
+    <article class="card">
+      <h2>Actual dose vs design dose</h2>
+      <p class="note">Actual dose = chlorine added ÷ water pumped over the period (mg/L). The tick is the design dose from the jar test.</p>
+      <div class="chart" id="chDose"></div>
+    </article>
+    <article class="card">
+      <h2>Daily reporting and tank FRC status</h2>
+      <p class="note">One cell per borehole per day.</p>
+      <div class="chart" id="chHeat"></div>
+    </article>
+  </section>
+
+  <section class="card">
+    <div class="row-between">
+      <h2>Borehole status</h2>
+      <div class="downloads">
+        <button type="button" id="dlCsv" class="ghost">⬇ Download filtered data (CSV)</button>
+        <a href="data/daily_records.csv" class="ghost" download>⬇ Full dataset (CSV)</a>
+      </div>
+    </div>
+    <div class="table-wrap"><table id="bhTable"></table></div>
+  </section>
+
+  <details class="card">
+    <summary>Daily values table</summary>
+    <div class="table-wrap"><table id="dayTable"></table></div>
+  </details>
+
+  <footer id="footer"></footer>
+</div>
+<div id="tooltip" role="tooltip" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

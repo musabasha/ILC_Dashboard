@@ -1,0 +1,6 @@
+borehole_id,borehole_name,state_code,state,lga_code,lga,community,population,pump_flow_m3h,tablet_product,design_dose_mgl,status
+BH-BO-JER-0001,Muna Garage BH1,BO,Borno,JER,Jere,Muna Garage IDP Camp,4500,6.0,tcca_200,1.5,Functional
+BH-BO-JER-0002,Muna Garage BH2,BO,Borno,JER,Jere,Muna Garage IDP Camp,3200,4.0,tcca_200,1.2,Functional
+BH-BO-MMC-0001,Bakassi BH2,BO,Borno,MMC,Maiduguri M.C.,Bakassi IDP Camp,3000,4.5,hth_300,1.5,Functional
+BH-BO-MMC-0002,Teachers Village BH1,BO,Borno,MMC,Maiduguri M.C.,Teachers Village Camp,3800,5.0,tcca_200,1.3,Functional
+BH-BO-KDG-0001,Dalori BH1,BO,Borno,KDG,Konduga,Dalori Camp,2500,3.5,tcca_200,1.0,Functional
